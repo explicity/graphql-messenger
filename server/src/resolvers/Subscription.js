@@ -7,15 +7,25 @@ const newMessageSubscribe = (parent, args, context, info) => {
 };
 
 const newMessageActionSubscribe = (parent, args, context, info) => {
-  return context.prisma.$subscribe.message({
+  return context.prisma.$subscribe
+    .message({
       mutation_in: ['UPDATED']
-  }).node();
-}
+    })
+    .node();
+};
+
+const newReplySubscribe = (parent, args, context, info) => {
+  return context.prisma.$subscribe
+    .reply({
+      mutation_in: ['CREATED']
+    })
+    .node();
+};
 
 const newMessageAction = {
   subscribe: newMessageActionSubscribe,
   resolve: payload => {
-      return payload;
+    return payload;
   }
 };
 
@@ -26,6 +36,15 @@ const newMessage = {
   }
 };
 
+const newReply = {
+  subscribe: newReplySubscribe,
+  resolve: payload => {
+    return payload;
+  }
+};
+
 module.exports = {
-  newMessage, newMessageAction
+  newMessage,
+  newMessageAction,
+  newReply
 };

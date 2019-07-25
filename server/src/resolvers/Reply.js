@@ -1,6 +1,6 @@
 const message = (parent, args, context) => {
   return context.prisma
-    .response({
+    .reply({
       id: parent.id
     })
     .message();

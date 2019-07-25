@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const MESSAGES_QUERY = gql`
-  query messagesQuery($orderBy: MessagesOrderByInput) {
-    messages(orderBy: $orderBy) {
+  query messagesQuery($first: Int, $skip: Int, $orderBy: MessagesOrderByInput) {
+    messages(first: $first, skip: $skip, orderBy: $orderBy) {
       count
       messagesList {
         id
@@ -63,6 +63,18 @@ export const NEW_MESSAGES_SUBSCRIPTION = gql`
       replies {
         id
         body
+      }
+    }
+  }
+`;
+
+export const NEW_REPLIES_SUBSCRIPTION = gql`
+  subscription {
+    newReply {
+      id
+      body
+      message {
+        id
       }
     }
   }

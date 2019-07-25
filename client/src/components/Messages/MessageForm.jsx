@@ -4,6 +4,7 @@ import { Form, Button } from 'semantic-ui-react';
 
 import { POST_MESSAGE_MUTATION, MESSAGES_QUERY } from '../../queries';
 
+const LINKS_PER_PAGE = 5;
 class MessageForm extends Component {
   constructor(props) {
     super(props);
@@ -24,25 +25,6 @@ class MessageForm extends Component {
 
   render() {
     const { body } = this.state;
-    console.log('body: ', body);
-
-    const _updateStoreAfterAddingMessage = (store, newMessage) => {
-      const orderBy = 'createdAt_DESC';
-      const data = store.readQuery({
-        query: MESSAGES_QUERY,
-        variables: {
-          orderBy
-        }
-      });
-
-      data.messages.messagesList.unshift(newMessage);
-      data.messages.count++;
-
-      store.writeQuery({
-        query: MESSAGES_QUERY,
-        data
-      });
-    };
 
     return (
       <Form reply>
@@ -51,9 +33,23 @@ class MessageForm extends Component {
           mutation={POST_MESSAGE_MUTATION}
           variables={{ body }}
           update={(store, { data: { postMessage } }) => {
-            _updateStoreAfterAddingMessage(store, postMessage);
+            const first = LINKS_PER_PAGE;
+            const skip = 0;
+            const orderBy = 'createdAt_DESC';
+            const data = store.readQuery({
+              query: MESSAGES_QUERY,
+              variables: { first, skip, orderBy }
+            });
+
+            data.messages.messagesList.unshift(postMessage);
+            data.messages.count++;
+            store.writeQuery({
+              query: MESSAGES_QUERY,
+              data,
+              variables: { first, skip, orderBy }
+            });
           }}
-          onCompleted={() => this.props.history.push('/')}
+          onCompleted={() => this.props.history.push('/new/1')}
         >
           {postMutation => (
             <Button
