@@ -1,0 +1,10 @@
+#endpoint: ''endpoint: https://eu1.prisma.sh/olya-yakymovych-8c14ae/graphql-messenger/dev
+
+
+datamodel: datamodel.prisma
+generate:
+  - generator: javascript-client
+    output: ../src/generated/prisma-client
+hooks:
+  post-deploy:
+    - prisma generate

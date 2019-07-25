@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start-server": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "graphql": "^14.4.2",
+    "graphql-yoga": "^1.18.1",
+    "prisma-client-lib": "^1.34.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

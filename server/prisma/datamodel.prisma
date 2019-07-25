@@ -1,0 +1,14 @@
+type Product {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  title: String!
+  price: Float!
+  reviews: [Review]
+}
+
+type Review {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  text: String!
+  product: Product!
+}
