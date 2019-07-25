@@ -11,7 +11,5 @@ type Reply {
   id: ID! @id
   createdAt: DateTime! @createdAt
   body: String! 
-  likeCounter: Int! 
-  dislikeCounter: Int! 
   message: Message!
 }

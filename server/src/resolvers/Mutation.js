@@ -47,8 +47,6 @@ const postReply = async (parent, args, context, info) => {
 
   return context.prisma.createReply({
     body: args.body,
-    likeCounter: 0,
-    dislikeCounter: 0,
     message: { connect: { id: args.messageId } }
   });
 }

@@ -12,8 +12,6 @@ export const MESSAGES_QUERY = gql`
         replies {
           id
           body
-          likeCounter
-          dislikeCounter
         }
       }
     }
@@ -30,8 +28,6 @@ export const POST_MESSAGE_MUTATION = gql`
       replies {
         id
         body
-        likeCounter
-        dislikeCounter
       }
     }
   }
@@ -67,8 +63,6 @@ export const NEW_MESSAGES_SUBSCRIPTION = gql`
       replies {
         id
         body
-        likeCounter
-        dislikeCounter
       }
     }
   }
@@ -85,3 +79,11 @@ export const ACTION_MESSAGES_SUBSCRIPTION = gql`
   }
 `;
 
+export const POST_REPLY_MUTATION = gql`
+  mutation ReplyMutation($messageId: ID!, $body: String!) {
+    postReply(messageId: $messageId, body: $body) {
+      id
+      body
+    }
+  }
+`;

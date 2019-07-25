@@ -12,7 +12,7 @@ class ReplyList extends Component {
   }
 
   render() {
-    const { isFormShown, closeForm, replies } = this.props;
+    const { id, isFormShown, closeForm, replies } = this.props;
     console.log('isFormShown: ', isFormShown);
 
     return (
@@ -29,6 +29,7 @@ class ReplyList extends Component {
         </Comment.Group>
         {isFormShown && (
           <React.Fragment>
+            <ReplyForm messageId={id} closeForm={closeForm} />
             <Button
               content="Close form"
               icon="close"

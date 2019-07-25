@@ -240,8 +240,6 @@ type Reply {
   id: ID!
   createdAt: DateTime!
   body: String!
-  likeCounter: Int!
-  dislikeCounter: Int!
   message: Message!
 }
 
@@ -254,8 +252,6 @@ type ReplyConnection {
 input ReplyCreateInput {
   id: ID
   body: String!
-  likeCounter: Int!
-  dislikeCounter: Int!
   message: MessageCreateOneWithoutRepliesInput!
 }
 
@@ -267,8 +263,6 @@ input ReplyCreateManyWithoutMessageInput {
 input ReplyCreateWithoutMessageInput {
   id: ID
   body: String!
-  likeCounter: Int!
-  dislikeCounter: Int!
 }
 
 type ReplyEdge {
@@ -283,18 +277,12 @@ enum ReplyOrderByInput {
   createdAt_DESC
   body_ASC
   body_DESC
-  likeCounter_ASC
-  likeCounter_DESC
-  dislikeCounter_ASC
-  dislikeCounter_DESC
 }
 
 type ReplyPreviousValues {
   id: ID!
   createdAt: DateTime!
   body: String!
-  likeCounter: Int!
-  dislikeCounter: Int!
 }
 
 input ReplyScalarWhereInput {
@@ -334,22 +322,6 @@ input ReplyScalarWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
-  likeCounter: Int
-  likeCounter_not: Int
-  likeCounter_in: [Int!]
-  likeCounter_not_in: [Int!]
-  likeCounter_lt: Int
-  likeCounter_lte: Int
-  likeCounter_gt: Int
-  likeCounter_gte: Int
-  dislikeCounter: Int
-  dislikeCounter_not: Int
-  dislikeCounter_in: [Int!]
-  dislikeCounter_not_in: [Int!]
-  dislikeCounter_lt: Int
-  dislikeCounter_lte: Int
-  dislikeCounter_gt: Int
-  dislikeCounter_gte: Int
   AND: [ReplyScalarWhereInput!]
   OR: [ReplyScalarWhereInput!]
   NOT: [ReplyScalarWhereInput!]
@@ -375,21 +347,15 @@ input ReplySubscriptionWhereInput {
 
 input ReplyUpdateInput {
   body: String
-  likeCounter: Int
-  dislikeCounter: Int
   message: MessageUpdateOneRequiredWithoutRepliesInput
 }
 
 input ReplyUpdateManyDataInput {
   body: String
-  likeCounter: Int
-  dislikeCounter: Int
 }
 
 input ReplyUpdateManyMutationInput {
   body: String
-  likeCounter: Int
-  dislikeCounter: Int
 }
 
 input ReplyUpdateManyWithoutMessageInput {
@@ -411,8 +377,6 @@ input ReplyUpdateManyWithWhereNestedInput {
 
 input ReplyUpdateWithoutMessageDataInput {
   body: String
-  likeCounter: Int
-  dislikeCounter: Int
 }
 
 input ReplyUpdateWithWhereUniqueWithoutMessageInput {
@@ -463,22 +427,6 @@ input ReplyWhereInput {
   body_not_starts_with: String
   body_ends_with: String
   body_not_ends_with: String
-  likeCounter: Int
-  likeCounter_not: Int
-  likeCounter_in: [Int!]
-  likeCounter_not_in: [Int!]
-  likeCounter_lt: Int
-  likeCounter_lte: Int
-  likeCounter_gt: Int
-  likeCounter_gte: Int
-  dislikeCounter: Int
-  dislikeCounter_not: Int
-  dislikeCounter_in: [Int!]
-  dislikeCounter_not_in: [Int!]
-  dislikeCounter_lt: Int
-  dislikeCounter_lte: Int
-  dislikeCounter_gt: Int
-  dislikeCounter_gte: Int
   message: MessageWhereInput
   AND: [ReplyWhereInput!]
   OR: [ReplyWhereInput!]

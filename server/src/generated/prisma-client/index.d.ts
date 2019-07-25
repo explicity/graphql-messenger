@@ -146,11 +146,7 @@ export type ReplyOrderByInput =
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "body_ASC"
-  | "body_DESC"
-  | "likeCounter_ASC"
-  | "likeCounter_DESC"
-  | "dislikeCounter_ASC"
-  | "dislikeCounter_DESC";
+  | "body_DESC";
 
 export type MessageOrderByInput =
   | "id_ASC"
@@ -207,22 +203,6 @@ export interface ReplyWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  likeCounter_not?: Maybe<Int>;
-  likeCounter_in?: Maybe<Int[] | Int>;
-  likeCounter_not_in?: Maybe<Int[] | Int>;
-  likeCounter_lt?: Maybe<Int>;
-  likeCounter_lte?: Maybe<Int>;
-  likeCounter_gt?: Maybe<Int>;
-  likeCounter_gte?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
-  dislikeCounter_not?: Maybe<Int>;
-  dislikeCounter_in?: Maybe<Int[] | Int>;
-  dislikeCounter_not_in?: Maybe<Int[] | Int>;
-  dislikeCounter_lt?: Maybe<Int>;
-  dislikeCounter_lte?: Maybe<Int>;
-  dislikeCounter_gt?: Maybe<Int>;
-  dislikeCounter_gte?: Maybe<Int>;
   message?: Maybe<MessageWhereInput>;
   AND?: Maybe<ReplyWhereInput[] | ReplyWhereInput>;
   OR?: Maybe<ReplyWhereInput[] | ReplyWhereInput>;
@@ -312,8 +292,6 @@ export interface ReplyCreateManyWithoutMessageInput {
 export interface ReplyCreateWithoutMessageInput {
   id?: Maybe<ID_Input>;
   body: String;
-  likeCounter: Int;
-  dislikeCounter: Int;
 }
 
 export interface MessageUpdateInput {
@@ -352,8 +330,6 @@ export interface ReplyUpdateWithWhereUniqueWithoutMessageInput {
 
 export interface ReplyUpdateWithoutMessageDataInput {
   body?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
 }
 
 export interface ReplyUpsertWithWhereUniqueWithoutMessageInput {
@@ -399,22 +375,6 @@ export interface ReplyScalarWhereInput {
   body_not_starts_with?: Maybe<String>;
   body_ends_with?: Maybe<String>;
   body_not_ends_with?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  likeCounter_not?: Maybe<Int>;
-  likeCounter_in?: Maybe<Int[] | Int>;
-  likeCounter_not_in?: Maybe<Int[] | Int>;
-  likeCounter_lt?: Maybe<Int>;
-  likeCounter_lte?: Maybe<Int>;
-  likeCounter_gt?: Maybe<Int>;
-  likeCounter_gte?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
-  dislikeCounter_not?: Maybe<Int>;
-  dislikeCounter_in?: Maybe<Int[] | Int>;
-  dislikeCounter_not_in?: Maybe<Int[] | Int>;
-  dislikeCounter_lt?: Maybe<Int>;
-  dislikeCounter_lte?: Maybe<Int>;
-  dislikeCounter_gt?: Maybe<Int>;
-  dislikeCounter_gte?: Maybe<Int>;
   AND?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
   OR?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
   NOT?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
@@ -427,8 +387,6 @@ export interface ReplyUpdateManyWithWhereNestedInput {
 
 export interface ReplyUpdateManyDataInput {
   body?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
 }
 
 export interface MessageUpdateManyMutationInput {
@@ -440,8 +398,6 @@ export interface MessageUpdateManyMutationInput {
 export interface ReplyCreateInput {
   id?: Maybe<ID_Input>;
   body: String;
-  likeCounter: Int;
-  dislikeCounter: Int;
   message: MessageCreateOneWithoutRepliesInput;
 }
 
@@ -459,8 +415,6 @@ export interface MessageCreateWithoutRepliesInput {
 
 export interface ReplyUpdateInput {
   body?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
   message?: Maybe<MessageUpdateOneRequiredWithoutRepliesInput>;
 }
 
@@ -484,8 +438,6 @@ export interface MessageUpsertWithoutRepliesInput {
 
 export interface ReplyUpdateManyMutationInput {
   body?: Maybe<String>;
-  likeCounter?: Maybe<Int>;
-  dislikeCounter?: Maybe<Int>;
 }
 
 export interface MessageSubscriptionWhereInput {
@@ -581,16 +533,12 @@ export interface Reply {
   id: ID_Output;
   createdAt: DateTimeOutput;
   body: String;
-  likeCounter: Int;
-  dislikeCounter: Int;
 }
 
 export interface ReplyPromise extends Promise<Reply>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   body: () => Promise<String>;
-  likeCounter: () => Promise<Int>;
-  dislikeCounter: () => Promise<Int>;
   message: <T = MessagePromise>() => T;
 }
 
@@ -600,8 +548,6 @@ export interface ReplySubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   body: () => Promise<AsyncIterator<String>>;
-  likeCounter: () => Promise<AsyncIterator<Int>>;
-  dislikeCounter: () => Promise<AsyncIterator<Int>>;
   message: <T = MessageSubscription>() => T;
 }
 
@@ -611,8 +557,6 @@ export interface ReplyNullablePromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   body: () => Promise<String>;
-  likeCounter: () => Promise<Int>;
-  dislikeCounter: () => Promise<Int>;
   message: <T = MessagePromise>() => T;
 }
 
@@ -845,8 +789,6 @@ export interface ReplyPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   body: String;
-  likeCounter: Int;
-  dislikeCounter: Int;
 }
 
 export interface ReplyPreviousValuesPromise
@@ -855,8 +797,6 @@ export interface ReplyPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   body: () => Promise<String>;
-  likeCounter: () => Promise<Int>;
-  dislikeCounter: () => Promise<Int>;
 }
 
 export interface ReplyPreviousValuesSubscription
@@ -865,8 +805,6 @@ export interface ReplyPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   body: () => Promise<AsyncIterator<String>>;
-  likeCounter: () => Promise<AsyncIterator<Int>>;
-  dislikeCounter: () => Promise<AsyncIterator<Int>>;
 }
 
 /*

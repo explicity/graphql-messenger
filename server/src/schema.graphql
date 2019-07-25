@@ -46,7 +46,5 @@ type Message {
 type Reply {
   id: ID!
   body: String!
-  likeCounter: Int!
-  dislikeCounter: Int!
   message: Message!
 }
