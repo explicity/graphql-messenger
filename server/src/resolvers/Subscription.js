@@ -6,6 +6,19 @@ const newMessageSubscribe = (parent, args, context, info) => {
     .node();
 };
 
+const newMessageActionSubscribe = (parent, args, context, info) => {
+  return context.prisma.$subscribe.message({
+      mutation_in: ['UPDATED']
+  }).node();
+}
+
+const newMessageAction = {
+  subscribe: newMessageActionSubscribe,
+  resolve: payload => {
+      return payload;
+  }
+};
+
 const newMessage = {
   subscribe: newMessageSubscribe,
   resolve: payload => {
@@ -14,5 +27,5 @@ const newMessage = {
 };
 
 module.exports = {
-  newMessage
+  newMessage, newMessageAction
 };

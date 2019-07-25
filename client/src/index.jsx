@@ -10,6 +10,8 @@ import { getMainDefinition } from 'apollo-utilities';
 
 import { Routing } from './components/Routing';
 
+import './styles.scss';
+
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000`,
   options: {

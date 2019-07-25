@@ -19,12 +19,15 @@ enum MessagesOrderByInput {
 
 type Mutation {
   postMessage(body: String!): Message!
+  postMessageLike(messageId: ID!): Message!
+  postMessageDislike(messageId: ID!): Message!
   postReply(messageId: ID!, body: String!): Reply!
 }
 
 type Subscription {
-  newMessage: Message,
+  newMessage: Message
   newReply: Reply
+  newMessageAction: Message
 }
 
 type Messages {
