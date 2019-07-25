@@ -18,9 +18,9 @@ class MessageForm extends Component {
   handleChange(event) {
     const { value } = event.target;
     this.setState({
-        body: value
-    })
-}
+      body: value
+    });
+  }
 
   render() {
     const { body } = this.state;

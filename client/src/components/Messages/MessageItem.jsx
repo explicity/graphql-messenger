@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import { Comment, Icon } from 'semantic-ui-react';
 
+import ReplyList from '../Replies/ReplyList.jsx';
+
 import { POST_MESSAGE_LIKE_MUTATION, POST_MESSAGE_DISLIKE_MUTATION, MESSAGES_QUERY } from '../../queries';
 
-const MessageItem = ({ id, body, likeCounter, dislikeCounter }) => {
-    
+const MessageItem = ({ id, body, replies, likeCounter, dislikeCounter }) => {
+  const [showReviewForm, toggleForm] = useState(false);
+
   const _updateStoreAfterAction = (store, action) => {
     const orderBy = 'createdAt_DESC';
     const data = store.readQuery({
@@ -28,11 +31,11 @@ const MessageItem = ({ id, body, likeCounter, dislikeCounter }) => {
       data
     });
   };
-  console.log('likeCounter: ', likeCounter);
   return (
     <Comment>
+      <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/christian.jpg' />
       <Comment.Content>
-        <Comment.Author>
+        <Comment.Author as="a">
           #{id.slice(id.length - 4, id.length - 1)}
         </Comment.Author>
         <Comment.Text>{body}</Comment.Text>
@@ -66,8 +69,10 @@ const MessageItem = ({ id, body, likeCounter, dislikeCounter }) => {
               </Comment.Action>
             )}
           </Mutation>
+          <Comment.Action onClick={() => toggleForm(!showReviewForm)}>Reply</Comment.Action>
         </Comment.Actions>
       </Comment.Content>
+      <ReplyList id={id} replies={replies} isFormShown={showReviewForm} closeForm={() => toggleForm(!showReviewForm)} />
     </Comment>
   );
 };
