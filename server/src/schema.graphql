@@ -23,7 +23,8 @@ type Mutation {
 }
 
 type Subscription {
-  newMessage: Message
+  newMessage: Message,
+  newReply: Reply
 }
 
 type Messages {

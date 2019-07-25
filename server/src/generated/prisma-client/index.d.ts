@@ -16,8 +16,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  product: (where?: ProductWhereInput) => Promise<boolean>;
-  review: (where?: ReviewWhereInput) => Promise<boolean>;
+  message: (where?: MessageWhereInput) => Promise<boolean>;
+  reply: (where?: ReplyWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -39,82 +39,82 @@ export interface Prisma {
    * Queries
    */
 
-  product: (where: ProductWhereUniqueInput) => ProductNullablePromise;
-  products: (args?: {
-    where?: ProductWhereInput;
-    orderBy?: ProductOrderByInput;
+  message: (where: MessageWhereUniqueInput) => MessageNullablePromise;
+  messages: (args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Product>;
-  productsConnection: (args?: {
-    where?: ProductWhereInput;
-    orderBy?: ProductOrderByInput;
+  }) => FragmentableArray<Message>;
+  messagesConnection: (args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ProductConnectionPromise;
-  review: (where: ReviewWhereUniqueInput) => ReviewNullablePromise;
-  reviews: (args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  }) => MessageConnectionPromise;
+  reply: (where: ReplyWhereUniqueInput) => ReplyNullablePromise;
+  replies: (args?: {
+    where?: ReplyWhereInput;
+    orderBy?: ReplyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Review>;
-  reviewsConnection: (args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  }) => FragmentableArray<Reply>;
+  repliesConnection: (args?: {
+    where?: ReplyWhereInput;
+    orderBy?: ReplyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ReviewConnectionPromise;
+  }) => ReplyConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createProduct: (data: ProductCreateInput) => ProductPromise;
-  updateProduct: (args: {
-    data: ProductUpdateInput;
-    where: ProductWhereUniqueInput;
-  }) => ProductPromise;
-  updateManyProducts: (args: {
-    data: ProductUpdateManyMutationInput;
-    where?: ProductWhereInput;
+  createMessage: (data: MessageCreateInput) => MessagePromise;
+  updateMessage: (args: {
+    data: MessageUpdateInput;
+    where: MessageWhereUniqueInput;
+  }) => MessagePromise;
+  updateManyMessages: (args: {
+    data: MessageUpdateManyMutationInput;
+    where?: MessageWhereInput;
   }) => BatchPayloadPromise;
-  upsertProduct: (args: {
-    where: ProductWhereUniqueInput;
-    create: ProductCreateInput;
-    update: ProductUpdateInput;
-  }) => ProductPromise;
-  deleteProduct: (where: ProductWhereUniqueInput) => ProductPromise;
-  deleteManyProducts: (where?: ProductWhereInput) => BatchPayloadPromise;
-  createReview: (data: ReviewCreateInput) => ReviewPromise;
-  updateReview: (args: {
-    data: ReviewUpdateInput;
-    where: ReviewWhereUniqueInput;
-  }) => ReviewPromise;
-  updateManyReviews: (args: {
-    data: ReviewUpdateManyMutationInput;
-    where?: ReviewWhereInput;
+  upsertMessage: (args: {
+    where: MessageWhereUniqueInput;
+    create: MessageCreateInput;
+    update: MessageUpdateInput;
+  }) => MessagePromise;
+  deleteMessage: (where: MessageWhereUniqueInput) => MessagePromise;
+  deleteManyMessages: (where?: MessageWhereInput) => BatchPayloadPromise;
+  createReply: (data: ReplyCreateInput) => ReplyPromise;
+  updateReply: (args: {
+    data: ReplyUpdateInput;
+    where: ReplyWhereUniqueInput;
+  }) => ReplyPromise;
+  updateManyReplies: (args: {
+    data: ReplyUpdateManyMutationInput;
+    where?: ReplyWhereInput;
   }) => BatchPayloadPromise;
-  upsertReview: (args: {
-    where: ReviewWhereUniqueInput;
-    create: ReviewCreateInput;
-    update: ReviewUpdateInput;
-  }) => ReviewPromise;
-  deleteReview: (where: ReviewWhereUniqueInput) => ReviewPromise;
-  deleteManyReviews: (where?: ReviewWhereInput) => BatchPayloadPromise;
+  upsertReply: (args: {
+    where: ReplyWhereUniqueInput;
+    create: ReplyCreateInput;
+    update: ReplyUpdateInput;
+  }) => ReplyPromise;
+  deleteReply: (where: ReplyWhereUniqueInput) => ReplyPromise;
+  deleteManyReplies: (where?: ReplyWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -124,12 +124,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  product: (
-    where?: ProductSubscriptionWhereInput
-  ) => ProductSubscriptionPayloadSubscription;
-  review: (
-    where?: ReviewSubscriptionWhereInput
-  ) => ReviewSubscriptionPayloadSubscription;
+  message: (
+    where?: MessageSubscriptionWhereInput
+  ) => MessageSubscriptionPayloadSubscription;
+  reply: (
+    where?: ReplySubscriptionWhereInput
+  ) => ReplySubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -140,31 +140,37 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ReviewOrderByInput =
+export type ReplyOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
-  | "text_ASC"
-  | "text_DESC";
+  | "body_ASC"
+  | "body_DESC"
+  | "likeCounter_ASC"
+  | "likeCounter_DESC"
+  | "dislikeCounter_ASC"
+  | "dislikeCounter_DESC";
 
-export type ProductOrderByInput =
+export type MessageOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "price_ASC"
-  | "price_DESC";
+  | "body_ASC"
+  | "body_DESC"
+  | "likeCounter_ASC"
+  | "likeCounter_DESC"
+  | "dislikeCounter_ASC"
+  | "dislikeCounter_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ProductWhereUniqueInput = AtLeastOne<{
+export type MessageWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ReviewWhereInput {
+export interface ReplyWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -187,27 +193,43 @@ export interface ReviewWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  product?: Maybe<ProductWhereInput>;
-  AND?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
-  OR?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
-  NOT?: Maybe<ReviewWhereInput[] | ReviewWhereInput>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  likeCounter_not?: Maybe<Int>;
+  likeCounter_in?: Maybe<Int[] | Int>;
+  likeCounter_not_in?: Maybe<Int[] | Int>;
+  likeCounter_lt?: Maybe<Int>;
+  likeCounter_lte?: Maybe<Int>;
+  likeCounter_gt?: Maybe<Int>;
+  likeCounter_gte?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
+  dislikeCounter_not?: Maybe<Int>;
+  dislikeCounter_in?: Maybe<Int[] | Int>;
+  dislikeCounter_not_in?: Maybe<Int[] | Int>;
+  dislikeCounter_lt?: Maybe<Int>;
+  dislikeCounter_lte?: Maybe<Int>;
+  dislikeCounter_gt?: Maybe<Int>;
+  dislikeCounter_gte?: Maybe<Int>;
+  message?: Maybe<MessageWhereInput>;
+  AND?: Maybe<ReplyWhereInput[] | ReplyWhereInput>;
+  OR?: Maybe<ReplyWhereInput[] | ReplyWhereInput>;
+  NOT?: Maybe<ReplyWhereInput[] | ReplyWhereInput>;
 }
 
-export interface ProductWhereInput {
+export interface MessageWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -230,104 +252,117 @@ export interface ProductWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  price?: Maybe<Float>;
-  price_not?: Maybe<Float>;
-  price_in?: Maybe<Float[] | Float>;
-  price_not_in?: Maybe<Float[] | Float>;
-  price_lt?: Maybe<Float>;
-  price_lte?: Maybe<Float>;
-  price_gt?: Maybe<Float>;
-  price_gte?: Maybe<Float>;
-  reviews_every?: Maybe<ReviewWhereInput>;
-  reviews_some?: Maybe<ReviewWhereInput>;
-  reviews_none?: Maybe<ReviewWhereInput>;
-  AND?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  OR?: Maybe<ProductWhereInput[] | ProductWhereInput>;
-  NOT?: Maybe<ProductWhereInput[] | ProductWhereInput>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  likeCounter_not?: Maybe<Int>;
+  likeCounter_in?: Maybe<Int[] | Int>;
+  likeCounter_not_in?: Maybe<Int[] | Int>;
+  likeCounter_lt?: Maybe<Int>;
+  likeCounter_lte?: Maybe<Int>;
+  likeCounter_gt?: Maybe<Int>;
+  likeCounter_gte?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
+  dislikeCounter_not?: Maybe<Int>;
+  dislikeCounter_in?: Maybe<Int[] | Int>;
+  dislikeCounter_not_in?: Maybe<Int[] | Int>;
+  dislikeCounter_lt?: Maybe<Int>;
+  dislikeCounter_lte?: Maybe<Int>;
+  dislikeCounter_gt?: Maybe<Int>;
+  dislikeCounter_gte?: Maybe<Int>;
+  replies_every?: Maybe<ReplyWhereInput>;
+  replies_some?: Maybe<ReplyWhereInput>;
+  replies_none?: Maybe<ReplyWhereInput>;
+  AND?: Maybe<MessageWhereInput[] | MessageWhereInput>;
+  OR?: Maybe<MessageWhereInput[] | MessageWhereInput>;
+  NOT?: Maybe<MessageWhereInput[] | MessageWhereInput>;
 }
 
-export type ReviewWhereUniqueInput = AtLeastOne<{
+export type ReplyWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ProductCreateInput {
+export interface MessageCreateInput {
   id?: Maybe<ID_Input>;
-  title: String;
-  price: Float;
-  reviews?: Maybe<ReviewCreateManyWithoutProductInput>;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
+  replies?: Maybe<ReplyCreateManyWithoutMessageInput>;
 }
 
-export interface ReviewCreateManyWithoutProductInput {
+export interface ReplyCreateManyWithoutMessageInput {
   create?: Maybe<
-    ReviewCreateWithoutProductInput[] | ReviewCreateWithoutProductInput
+    ReplyCreateWithoutMessageInput[] | ReplyCreateWithoutMessageInput
   >;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
+  connect?: Maybe<ReplyWhereUniqueInput[] | ReplyWhereUniqueInput>;
 }
 
-export interface ReviewCreateWithoutProductInput {
+export interface ReplyCreateWithoutMessageInput {
   id?: Maybe<ID_Input>;
-  text: String;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ProductUpdateInput {
-  title?: Maybe<String>;
-  price?: Maybe<Float>;
-  reviews?: Maybe<ReviewUpdateManyWithoutProductInput>;
+export interface MessageUpdateInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
+  replies?: Maybe<ReplyUpdateManyWithoutMessageInput>;
 }
 
-export interface ReviewUpdateManyWithoutProductInput {
+export interface ReplyUpdateManyWithoutMessageInput {
   create?: Maybe<
-    ReviewCreateWithoutProductInput[] | ReviewCreateWithoutProductInput
+    ReplyCreateWithoutMessageInput[] | ReplyCreateWithoutMessageInput
   >;
-  delete?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  connect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  set?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
-  disconnect?: Maybe<ReviewWhereUniqueInput[] | ReviewWhereUniqueInput>;
+  delete?: Maybe<ReplyWhereUniqueInput[] | ReplyWhereUniqueInput>;
+  connect?: Maybe<ReplyWhereUniqueInput[] | ReplyWhereUniqueInput>;
+  set?: Maybe<ReplyWhereUniqueInput[] | ReplyWhereUniqueInput>;
+  disconnect?: Maybe<ReplyWhereUniqueInput[] | ReplyWhereUniqueInput>;
   update?: Maybe<
-    | ReviewUpdateWithWhereUniqueWithoutProductInput[]
-    | ReviewUpdateWithWhereUniqueWithoutProductInput
+    | ReplyUpdateWithWhereUniqueWithoutMessageInput[]
+    | ReplyUpdateWithWhereUniqueWithoutMessageInput
   >;
   upsert?: Maybe<
-    | ReviewUpsertWithWhereUniqueWithoutProductInput[]
-    | ReviewUpsertWithWhereUniqueWithoutProductInput
+    | ReplyUpsertWithWhereUniqueWithoutMessageInput[]
+    | ReplyUpsertWithWhereUniqueWithoutMessageInput
   >;
-  deleteMany?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
+  deleteMany?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
   updateMany?: Maybe<
-    | ReviewUpdateManyWithWhereNestedInput[]
-    | ReviewUpdateManyWithWhereNestedInput
+    ReplyUpdateManyWithWhereNestedInput[] | ReplyUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface ReviewUpdateWithWhereUniqueWithoutProductInput {
-  where: ReviewWhereUniqueInput;
-  data: ReviewUpdateWithoutProductDataInput;
+export interface ReplyUpdateWithWhereUniqueWithoutMessageInput {
+  where: ReplyWhereUniqueInput;
+  data: ReplyUpdateWithoutMessageDataInput;
 }
 
-export interface ReviewUpdateWithoutProductDataInput {
-  text?: Maybe<String>;
+export interface ReplyUpdateWithoutMessageDataInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
 }
 
-export interface ReviewUpsertWithWhereUniqueWithoutProductInput {
-  where: ReviewWhereUniqueInput;
-  update: ReviewUpdateWithoutProductDataInput;
-  create: ReviewCreateWithoutProductInput;
+export interface ReplyUpsertWithWhereUniqueWithoutMessageInput {
+  where: ReplyWhereUniqueInput;
+  update: ReplyUpdateWithoutMessageDataInput;
+  create: ReplyCreateWithoutMessageInput;
 }
 
-export interface ReviewScalarWhereInput {
+export interface ReplyScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -350,123 +385,152 @@ export interface ReviewScalarWhereInput {
   createdAt_lte?: Maybe<DateTimeInput>;
   createdAt_gt?: Maybe<DateTimeInput>;
   createdAt_gte?: Maybe<DateTimeInput>;
-  text?: Maybe<String>;
-  text_not?: Maybe<String>;
-  text_in?: Maybe<String[] | String>;
-  text_not_in?: Maybe<String[] | String>;
-  text_lt?: Maybe<String>;
-  text_lte?: Maybe<String>;
-  text_gt?: Maybe<String>;
-  text_gte?: Maybe<String>;
-  text_contains?: Maybe<String>;
-  text_not_contains?: Maybe<String>;
-  text_starts_with?: Maybe<String>;
-  text_not_starts_with?: Maybe<String>;
-  text_ends_with?: Maybe<String>;
-  text_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
-  OR?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
-  NOT?: Maybe<ReviewScalarWhereInput[] | ReviewScalarWhereInput>;
+  body?: Maybe<String>;
+  body_not?: Maybe<String>;
+  body_in?: Maybe<String[] | String>;
+  body_not_in?: Maybe<String[] | String>;
+  body_lt?: Maybe<String>;
+  body_lte?: Maybe<String>;
+  body_gt?: Maybe<String>;
+  body_gte?: Maybe<String>;
+  body_contains?: Maybe<String>;
+  body_not_contains?: Maybe<String>;
+  body_starts_with?: Maybe<String>;
+  body_not_starts_with?: Maybe<String>;
+  body_ends_with?: Maybe<String>;
+  body_not_ends_with?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  likeCounter_not?: Maybe<Int>;
+  likeCounter_in?: Maybe<Int[] | Int>;
+  likeCounter_not_in?: Maybe<Int[] | Int>;
+  likeCounter_lt?: Maybe<Int>;
+  likeCounter_lte?: Maybe<Int>;
+  likeCounter_gt?: Maybe<Int>;
+  likeCounter_gte?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
+  dislikeCounter_not?: Maybe<Int>;
+  dislikeCounter_in?: Maybe<Int[] | Int>;
+  dislikeCounter_not_in?: Maybe<Int[] | Int>;
+  dislikeCounter_lt?: Maybe<Int>;
+  dislikeCounter_lte?: Maybe<Int>;
+  dislikeCounter_gt?: Maybe<Int>;
+  dislikeCounter_gte?: Maybe<Int>;
+  AND?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
+  OR?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
+  NOT?: Maybe<ReplyScalarWhereInput[] | ReplyScalarWhereInput>;
 }
 
-export interface ReviewUpdateManyWithWhereNestedInput {
-  where: ReviewScalarWhereInput;
-  data: ReviewUpdateManyDataInput;
+export interface ReplyUpdateManyWithWhereNestedInput {
+  where: ReplyScalarWhereInput;
+  data: ReplyUpdateManyDataInput;
 }
 
-export interface ReviewUpdateManyDataInput {
-  text?: Maybe<String>;
+export interface ReplyUpdateManyDataInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
 }
 
-export interface ProductUpdateManyMutationInput {
-  title?: Maybe<String>;
-  price?: Maybe<Float>;
+export interface MessageUpdateManyMutationInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
 }
 
-export interface ReviewCreateInput {
+export interface ReplyCreateInput {
   id?: Maybe<ID_Input>;
-  text: String;
-  product: ProductCreateOneWithoutReviewsInput;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
+  message: MessageCreateOneWithoutRepliesInput;
 }
 
-export interface ProductCreateOneWithoutReviewsInput {
-  create?: Maybe<ProductCreateWithoutReviewsInput>;
-  connect?: Maybe<ProductWhereUniqueInput>;
+export interface MessageCreateOneWithoutRepliesInput {
+  create?: Maybe<MessageCreateWithoutRepliesInput>;
+  connect?: Maybe<MessageWhereUniqueInput>;
 }
 
-export interface ProductCreateWithoutReviewsInput {
+export interface MessageCreateWithoutRepliesInput {
   id?: Maybe<ID_Input>;
-  title: String;
-  price: Float;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ReviewUpdateInput {
-  text?: Maybe<String>;
-  product?: Maybe<ProductUpdateOneRequiredWithoutReviewsInput>;
+export interface ReplyUpdateInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
+  message?: Maybe<MessageUpdateOneRequiredWithoutRepliesInput>;
 }
 
-export interface ProductUpdateOneRequiredWithoutReviewsInput {
-  create?: Maybe<ProductCreateWithoutReviewsInput>;
-  update?: Maybe<ProductUpdateWithoutReviewsDataInput>;
-  upsert?: Maybe<ProductUpsertWithoutReviewsInput>;
-  connect?: Maybe<ProductWhereUniqueInput>;
+export interface MessageUpdateOneRequiredWithoutRepliesInput {
+  create?: Maybe<MessageCreateWithoutRepliesInput>;
+  update?: Maybe<MessageUpdateWithoutRepliesDataInput>;
+  upsert?: Maybe<MessageUpsertWithoutRepliesInput>;
+  connect?: Maybe<MessageWhereUniqueInput>;
 }
 
-export interface ProductUpdateWithoutReviewsDataInput {
-  title?: Maybe<String>;
-  price?: Maybe<Float>;
+export interface MessageUpdateWithoutRepliesDataInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
 }
 
-export interface ProductUpsertWithoutReviewsInput {
-  update: ProductUpdateWithoutReviewsDataInput;
-  create: ProductCreateWithoutReviewsInput;
+export interface MessageUpsertWithoutRepliesInput {
+  update: MessageUpdateWithoutRepliesDataInput;
+  create: MessageCreateWithoutRepliesInput;
 }
 
-export interface ReviewUpdateManyMutationInput {
-  text?: Maybe<String>;
+export interface ReplyUpdateManyMutationInput {
+  body?: Maybe<String>;
+  likeCounter?: Maybe<Int>;
+  dislikeCounter?: Maybe<Int>;
 }
 
-export interface ProductSubscriptionWhereInput {
+export interface MessageSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProductWhereInput>;
-  AND?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
-  OR?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
-  NOT?: Maybe<ProductSubscriptionWhereInput[] | ProductSubscriptionWhereInput>;
+  node?: Maybe<MessageWhereInput>;
+  AND?: Maybe<MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput>;
+  OR?: Maybe<MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput>;
+  NOT?: Maybe<MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput>;
 }
 
-export interface ReviewSubscriptionWhereInput {
+export interface ReplySubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ReviewWhereInput>;
-  AND?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
-  OR?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
-  NOT?: Maybe<ReviewSubscriptionWhereInput[] | ReviewSubscriptionWhereInput>;
+  node?: Maybe<ReplyWhereInput>;
+  AND?: Maybe<ReplySubscriptionWhereInput[] | ReplySubscriptionWhereInput>;
+  OR?: Maybe<ReplySubscriptionWhereInput[] | ReplySubscriptionWhereInput>;
+  NOT?: Maybe<ReplySubscriptionWhereInput[] | ReplySubscriptionWhereInput>;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Product {
+export interface Message {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  title: String;
-  price: Float;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ProductPromise extends Promise<Product>, Fragmentable {
+export interface MessagePromise extends Promise<Message>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-  price: () => Promise<Float>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
+  replies: <T = FragmentableArray<Reply>>(args?: {
+    where?: ReplyWhereInput;
+    orderBy?: ReplyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -475,16 +539,17 @@ export interface ProductPromise extends Promise<Product>, Fragmentable {
   }) => T;
 }
 
-export interface ProductSubscription
-  extends Promise<AsyncIterator<Product>>,
+export interface MessageSubscription
+  extends Promise<AsyncIterator<Message>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  title: () => Promise<AsyncIterator<String>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  reviews: <T = Promise<AsyncIterator<ReviewSubscription>>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  body: () => Promise<AsyncIterator<String>>;
+  likeCounter: () => Promise<AsyncIterator<Int>>;
+  dislikeCounter: () => Promise<AsyncIterator<Int>>;
+  replies: <T = Promise<AsyncIterator<ReplySubscription>>>(args?: {
+    where?: ReplyWhereInput;
+    orderBy?: ReplyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -493,16 +558,17 @@ export interface ProductSubscription
   }) => T;
 }
 
-export interface ProductNullablePromise
-  extends Promise<Product | null>,
+export interface MessageNullablePromise
+  extends Promise<Message | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-  price: () => Promise<Float>;
-  reviews: <T = FragmentableArray<Review>>(args?: {
-    where?: ReviewWhereInput;
-    orderBy?: ReviewOrderByInput;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
+  replies: <T = FragmentableArray<Reply>>(args?: {
+    where?: ReplyWhereInput;
+    orderBy?: ReplyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -511,56 +577,64 @@ export interface ProductNullablePromise
   }) => T;
 }
 
-export interface Review {
+export interface Reply {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  text: String;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ReviewPromise extends Promise<Review>, Fragmentable {
+export interface ReplyPromise extends Promise<Reply>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
-  product: <T = ProductPromise>() => T;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
+  message: <T = MessagePromise>() => T;
 }
 
-export interface ReviewSubscription
-  extends Promise<AsyncIterator<Review>>,
+export interface ReplySubscription
+  extends Promise<AsyncIterator<Reply>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  text: () => Promise<AsyncIterator<String>>;
-  product: <T = ProductSubscription>() => T;
+  body: () => Promise<AsyncIterator<String>>;
+  likeCounter: () => Promise<AsyncIterator<Int>>;
+  dislikeCounter: () => Promise<AsyncIterator<Int>>;
+  message: <T = MessageSubscription>() => T;
 }
 
-export interface ReviewNullablePromise
-  extends Promise<Review | null>,
+export interface ReplyNullablePromise
+  extends Promise<Reply | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
-  product: <T = ProductPromise>() => T;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
+  message: <T = MessagePromise>() => T;
 }
 
-export interface ProductConnection {
+export interface MessageConnection {
   pageInfo: PageInfo;
-  edges: ProductEdge[];
+  edges: MessageEdge[];
 }
 
-export interface ProductConnectionPromise
-  extends Promise<ProductConnection>,
+export interface MessageConnectionPromise
+  extends Promise<MessageConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProductEdge>>() => T;
-  aggregate: <T = AggregateProductPromise>() => T;
+  edges: <T = FragmentableArray<MessageEdge>>() => T;
+  aggregate: <T = AggregateMessagePromise>() => T;
 }
 
-export interface ProductConnectionSubscription
-  extends Promise<AsyncIterator<ProductConnection>>,
+export interface MessageConnectionSubscription
+  extends Promise<AsyncIterator<MessageConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProductEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProductSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MessageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMessageSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -586,89 +660,89 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ProductEdge {
-  node: Product;
+export interface MessageEdge {
+  node: Message;
   cursor: String;
 }
 
-export interface ProductEdgePromise extends Promise<ProductEdge>, Fragmentable {
-  node: <T = ProductPromise>() => T;
+export interface MessageEdgePromise extends Promise<MessageEdge>, Fragmentable {
+  node: <T = MessagePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ProductEdgeSubscription
-  extends Promise<AsyncIterator<ProductEdge>>,
+export interface MessageEdgeSubscription
+  extends Promise<AsyncIterator<MessageEdge>>,
     Fragmentable {
-  node: <T = ProductSubscription>() => T;
+  node: <T = MessageSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateProduct {
+export interface AggregateMessage {
   count: Int;
 }
 
-export interface AggregateProductPromise
-  extends Promise<AggregateProduct>,
+export interface AggregateMessagePromise
+  extends Promise<AggregateMessage>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateProductSubscription
-  extends Promise<AsyncIterator<AggregateProduct>>,
+export interface AggregateMessageSubscription
+  extends Promise<AsyncIterator<AggregateMessage>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ReviewConnection {
+export interface ReplyConnection {
   pageInfo: PageInfo;
-  edges: ReviewEdge[];
+  edges: ReplyEdge[];
 }
 
-export interface ReviewConnectionPromise
-  extends Promise<ReviewConnection>,
+export interface ReplyConnectionPromise
+  extends Promise<ReplyConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ReviewEdge>>() => T;
-  aggregate: <T = AggregateReviewPromise>() => T;
+  edges: <T = FragmentableArray<ReplyEdge>>() => T;
+  aggregate: <T = AggregateReplyPromise>() => T;
 }
 
-export interface ReviewConnectionSubscription
-  extends Promise<AsyncIterator<ReviewConnection>>,
+export interface ReplyConnectionSubscription
+  extends Promise<AsyncIterator<ReplyConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ReviewEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateReviewSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ReplyEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateReplySubscription>() => T;
 }
 
-export interface ReviewEdge {
-  node: Review;
+export interface ReplyEdge {
+  node: Reply;
   cursor: String;
 }
 
-export interface ReviewEdgePromise extends Promise<ReviewEdge>, Fragmentable {
-  node: <T = ReviewPromise>() => T;
+export interface ReplyEdgePromise extends Promise<ReplyEdge>, Fragmentable {
+  node: <T = ReplyPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ReviewEdgeSubscription
-  extends Promise<AsyncIterator<ReviewEdge>>,
+export interface ReplyEdgeSubscription
+  extends Promise<AsyncIterator<ReplyEdge>>,
     Fragmentable {
-  node: <T = ReviewSubscription>() => T;
+  node: <T = ReplySubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateReview {
+export interface AggregateReply {
   count: Int;
 }
 
-export interface AggregateReviewPromise
-  extends Promise<AggregateReview>,
+export interface AggregateReplyPromise
+  extends Promise<AggregateReply>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateReviewSubscription
-  extends Promise<AsyncIterator<AggregateReview>>,
+export interface AggregateReplySubscription
+  extends Promise<AsyncIterator<AggregateReply>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -689,101 +763,110 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface ProductSubscriptionPayload {
+export interface MessageSubscriptionPayload {
   mutation: MutationType;
-  node: Product;
+  node: Message;
   updatedFields: String[];
-  previousValues: ProductPreviousValues;
+  previousValues: MessagePreviousValues;
 }
 
-export interface ProductSubscriptionPayloadPromise
-  extends Promise<ProductSubscriptionPayload>,
+export interface MessageSubscriptionPayloadPromise
+  extends Promise<MessageSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = ProductPromise>() => T;
+  node: <T = MessagePromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = ProductPreviousValuesPromise>() => T;
+  previousValues: <T = MessagePreviousValuesPromise>() => T;
 }
 
-export interface ProductSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ProductSubscriptionPayload>>,
+export interface MessageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MessageSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ProductSubscription>() => T;
+  node: <T = MessageSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ProductPreviousValuesSubscription>() => T;
+  previousValues: <T = MessagePreviousValuesSubscription>() => T;
 }
 
-export interface ProductPreviousValues {
+export interface MessagePreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  title: String;
-  price: Float;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ProductPreviousValuesPromise
-  extends Promise<ProductPreviousValues>,
+export interface MessagePreviousValuesPromise
+  extends Promise<MessagePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  title: () => Promise<String>;
-  price: () => Promise<Float>;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
 }
 
-export interface ProductPreviousValuesSubscription
-  extends Promise<AsyncIterator<ProductPreviousValues>>,
+export interface MessagePreviousValuesSubscription
+  extends Promise<AsyncIterator<MessagePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  title: () => Promise<AsyncIterator<String>>;
-  price: () => Promise<AsyncIterator<Float>>;
+  body: () => Promise<AsyncIterator<String>>;
+  likeCounter: () => Promise<AsyncIterator<Int>>;
+  dislikeCounter: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ReviewSubscriptionPayload {
+export interface ReplySubscriptionPayload {
   mutation: MutationType;
-  node: Review;
+  node: Reply;
   updatedFields: String[];
-  previousValues: ReviewPreviousValues;
+  previousValues: ReplyPreviousValues;
 }
 
-export interface ReviewSubscriptionPayloadPromise
-  extends Promise<ReviewSubscriptionPayload>,
+export interface ReplySubscriptionPayloadPromise
+  extends Promise<ReplySubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = ReviewPromise>() => T;
+  node: <T = ReplyPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = ReviewPreviousValuesPromise>() => T;
+  previousValues: <T = ReplyPreviousValuesPromise>() => T;
 }
 
-export interface ReviewSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ReviewSubscriptionPayload>>,
+export interface ReplySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ReplySubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ReviewSubscription>() => T;
+  node: <T = ReplySubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ReviewPreviousValuesSubscription>() => T;
+  previousValues: <T = ReplyPreviousValuesSubscription>() => T;
 }
 
-export interface ReviewPreviousValues {
+export interface ReplyPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
-  text: String;
+  body: String;
+  likeCounter: Int;
+  dislikeCounter: Int;
 }
 
-export interface ReviewPreviousValuesPromise
-  extends Promise<ReviewPreviousValues>,
+export interface ReplyPreviousValuesPromise
+  extends Promise<ReplyPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
-  text: () => Promise<String>;
+  body: () => Promise<String>;
+  likeCounter: () => Promise<Int>;
+  dislikeCounter: () => Promise<Int>;
 }
 
-export interface ReviewPreviousValuesSubscription
-  extends Promise<AsyncIterator<ReviewPreviousValues>>,
+export interface ReplyPreviousValuesSubscription
+  extends Promise<AsyncIterator<ReplyPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  text: () => Promise<AsyncIterator<String>>;
+  body: () => Promise<AsyncIterator<String>>;
+  likeCounter: () => Promise<AsyncIterator<Int>>;
+  dislikeCounter: () => Promise<AsyncIterator<Int>>;
 }
 
 /*
@@ -808,11 +891,6 @@ The `String` scalar type represents textual data, represented as UTF-8 character
 export type String = string;
 
 /*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
-*/
-export type Float = number;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
@@ -830,11 +908,11 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "Product",
+    name: "Message",
     embedded: false
   },
   {
-    name: "Review",
+    name: "Reply",
     embedded: false
   }
 ];

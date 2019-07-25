@@ -12,10 +12,15 @@
   "author": "Olya Yakymovych <msolya@outlook.com>",
   "license": "MIT",
   "dependencies": {
+    "apollo-boost": "^0.4.3",
+    "apollo-link-ws": "^1.0.18",
+    "graphql": "^14.4.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.8",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^5.0.1",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",

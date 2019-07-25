@@ -3,11 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateProduct {
+/* GraphQL */ `type AggregateMessage {
   count: Int!
 }
 
-type AggregateReview {
+type AggregateReply {
   count: Int!
 }
 
@@ -19,19 +19,194 @@ scalar DateTime
 
 scalar Long
 
+type Message {
+  id: ID!
+  createdAt: DateTime!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+  replies(where: ReplyWhereInput, orderBy: ReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reply!]
+}
+
+type MessageConnection {
+  pageInfo: PageInfo!
+  edges: [MessageEdge]!
+  aggregate: AggregateMessage!
+}
+
+input MessageCreateInput {
+  id: ID
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+  replies: ReplyCreateManyWithoutMessageInput
+}
+
+input MessageCreateOneWithoutRepliesInput {
+  create: MessageCreateWithoutRepliesInput
+  connect: MessageWhereUniqueInput
+}
+
+input MessageCreateWithoutRepliesInput {
+  id: ID
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+}
+
+type MessageEdge {
+  node: Message!
+  cursor: String!
+}
+
+enum MessageOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  body_ASC
+  body_DESC
+  likeCounter_ASC
+  likeCounter_DESC
+  dislikeCounter_ASC
+  dislikeCounter_DESC
+}
+
+type MessagePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+}
+
+type MessageSubscriptionPayload {
+  mutation: MutationType!
+  node: Message
+  updatedFields: [String!]
+  previousValues: MessagePreviousValues
+}
+
+input MessageSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MessageWhereInput
+  AND: [MessageSubscriptionWhereInput!]
+  OR: [MessageSubscriptionWhereInput!]
+  NOT: [MessageSubscriptionWhereInput!]
+}
+
+input MessageUpdateInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
+  replies: ReplyUpdateManyWithoutMessageInput
+}
+
+input MessageUpdateManyMutationInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
+}
+
+input MessageUpdateOneRequiredWithoutRepliesInput {
+  create: MessageCreateWithoutRepliesInput
+  update: MessageUpdateWithoutRepliesDataInput
+  upsert: MessageUpsertWithoutRepliesInput
+  connect: MessageWhereUniqueInput
+}
+
+input MessageUpdateWithoutRepliesDataInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
+}
+
+input MessageUpsertWithoutRepliesInput {
+  update: MessageUpdateWithoutRepliesDataInput!
+  create: MessageCreateWithoutRepliesInput!
+}
+
+input MessageWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  likeCounter: Int
+  likeCounter_not: Int
+  likeCounter_in: [Int!]
+  likeCounter_not_in: [Int!]
+  likeCounter_lt: Int
+  likeCounter_lte: Int
+  likeCounter_gt: Int
+  likeCounter_gte: Int
+  dislikeCounter: Int
+  dislikeCounter_not: Int
+  dislikeCounter_in: [Int!]
+  dislikeCounter_not_in: [Int!]
+  dislikeCounter_lt: Int
+  dislikeCounter_lte: Int
+  dislikeCounter_gt: Int
+  dislikeCounter_gte: Int
+  replies_every: ReplyWhereInput
+  replies_some: ReplyWhereInput
+  replies_none: ReplyWhereInput
+  AND: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
+  NOT: [MessageWhereInput!]
+}
+
+input MessageWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
-  createProduct(data: ProductCreateInput!): Product!
-  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
-  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
-  deleteProduct(where: ProductWhereUniqueInput!): Product
-  deleteManyProducts(where: ProductWhereInput): BatchPayload!
-  createReview(data: ReviewCreateInput!): Review!
-  updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
-  updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
-  upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
-  deleteReview(where: ReviewWhereUniqueInput!): Review
-  deleteManyReviews(where: ReviewWhereInput): BatchPayload!
+  createMessage(data: MessageCreateInput!): Message!
+  updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
+  updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
+  upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
+  deleteMessage(where: MessageWhereUniqueInput!): Message
+  deleteManyMessages(where: MessageWhereInput): BatchPayload!
+  createReply(data: ReplyCreateInput!): Reply!
+  updateReply(data: ReplyUpdateInput!, where: ReplyWhereUniqueInput!): Reply
+  updateManyReplies(data: ReplyUpdateManyMutationInput!, where: ReplyWhereInput): BatchPayload!
+  upsertReply(where: ReplyWhereUniqueInput!, create: ReplyCreateInput!, update: ReplyUpdateInput!): Reply!
+  deleteReply(where: ReplyWhereUniqueInput!): Reply
+  deleteManyReplies(where: ReplyWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -51,224 +226,78 @@ type PageInfo {
   endCursor: String
 }
 
-type Product {
-  id: ID!
-  createdAt: DateTime!
-  title: String!
-  price: Float!
-  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
-}
-
-type ProductConnection {
-  pageInfo: PageInfo!
-  edges: [ProductEdge]!
-  aggregate: AggregateProduct!
-}
-
-input ProductCreateInput {
-  id: ID
-  title: String!
-  price: Float!
-  reviews: ReviewCreateManyWithoutProductInput
-}
-
-input ProductCreateOneWithoutReviewsInput {
-  create: ProductCreateWithoutReviewsInput
-  connect: ProductWhereUniqueInput
-}
-
-input ProductCreateWithoutReviewsInput {
-  id: ID
-  title: String!
-  price: Float!
-}
-
-type ProductEdge {
-  node: Product!
-  cursor: String!
-}
-
-enum ProductOrderByInput {
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  title_ASC
-  title_DESC
-  price_ASC
-  price_DESC
-}
-
-type ProductPreviousValues {
-  id: ID!
-  createdAt: DateTime!
-  title: String!
-  price: Float!
-}
-
-type ProductSubscriptionPayload {
-  mutation: MutationType!
-  node: Product
-  updatedFields: [String!]
-  previousValues: ProductPreviousValues
-}
-
-input ProductSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: ProductWhereInput
-  AND: [ProductSubscriptionWhereInput!]
-  OR: [ProductSubscriptionWhereInput!]
-  NOT: [ProductSubscriptionWhereInput!]
-}
-
-input ProductUpdateInput {
-  title: String
-  price: Float
-  reviews: ReviewUpdateManyWithoutProductInput
-}
-
-input ProductUpdateManyMutationInput {
-  title: String
-  price: Float
-}
-
-input ProductUpdateOneRequiredWithoutReviewsInput {
-  create: ProductCreateWithoutReviewsInput
-  update: ProductUpdateWithoutReviewsDataInput
-  upsert: ProductUpsertWithoutReviewsInput
-  connect: ProductWhereUniqueInput
-}
-
-input ProductUpdateWithoutReviewsDataInput {
-  title: String
-  price: Float
-}
-
-input ProductUpsertWithoutReviewsInput {
-  update: ProductUpdateWithoutReviewsDataInput!
-  create: ProductCreateWithoutReviewsInput!
-}
-
-input ProductWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  price: Float
-  price_not: Float
-  price_in: [Float!]
-  price_not_in: [Float!]
-  price_lt: Float
-  price_lte: Float
-  price_gt: Float
-  price_gte: Float
-  reviews_every: ReviewWhereInput
-  reviews_some: ReviewWhereInput
-  reviews_none: ReviewWhereInput
-  AND: [ProductWhereInput!]
-  OR: [ProductWhereInput!]
-  NOT: [ProductWhereInput!]
-}
-
-input ProductWhereUniqueInput {
-  id: ID
-}
-
 type Query {
-  product(where: ProductWhereUniqueInput!): Product
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
-  review(where: ReviewWhereUniqueInput!): Review
-  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
-  reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  message(where: MessageWhereUniqueInput!): Message
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
+  messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
+  reply(where: ReplyWhereUniqueInput!): Reply
+  replies(where: ReplyWhereInput, orderBy: ReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Reply]!
+  repliesConnection(where: ReplyWhereInput, orderBy: ReplyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReplyConnection!
   node(id: ID!): Node
 }
 
-type Review {
+type Reply {
   id: ID!
   createdAt: DateTime!
-  text: String!
-  product: Product!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+  message: Message!
 }
 
-type ReviewConnection {
+type ReplyConnection {
   pageInfo: PageInfo!
-  edges: [ReviewEdge]!
-  aggregate: AggregateReview!
+  edges: [ReplyEdge]!
+  aggregate: AggregateReply!
 }
 
-input ReviewCreateInput {
+input ReplyCreateInput {
   id: ID
-  text: String!
-  product: ProductCreateOneWithoutReviewsInput!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
+  message: MessageCreateOneWithoutRepliesInput!
 }
 
-input ReviewCreateManyWithoutProductInput {
-  create: [ReviewCreateWithoutProductInput!]
-  connect: [ReviewWhereUniqueInput!]
+input ReplyCreateManyWithoutMessageInput {
+  create: [ReplyCreateWithoutMessageInput!]
+  connect: [ReplyWhereUniqueInput!]
 }
 
-input ReviewCreateWithoutProductInput {
+input ReplyCreateWithoutMessageInput {
   id: ID
-  text: String!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
 }
 
-type ReviewEdge {
-  node: Review!
+type ReplyEdge {
+  node: Reply!
   cursor: String!
 }
 
-enum ReviewOrderByInput {
+enum ReplyOrderByInput {
   id_ASC
   id_DESC
   createdAt_ASC
   createdAt_DESC
-  text_ASC
-  text_DESC
+  body_ASC
+  body_DESC
+  likeCounter_ASC
+  likeCounter_DESC
+  dislikeCounter_ASC
+  dislikeCounter_DESC
 }
 
-type ReviewPreviousValues {
+type ReplyPreviousValues {
   id: ID!
   createdAt: DateTime!
-  text: String!
+  body: String!
+  likeCounter: Int!
+  dislikeCounter: Int!
 }
 
-input ReviewScalarWhereInput {
+input ReplyScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -291,89 +320,113 @@ input ReviewScalarWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
-  AND: [ReviewScalarWhereInput!]
-  OR: [ReviewScalarWhereInput!]
-  NOT: [ReviewScalarWhereInput!]
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  likeCounter: Int
+  likeCounter_not: Int
+  likeCounter_in: [Int!]
+  likeCounter_not_in: [Int!]
+  likeCounter_lt: Int
+  likeCounter_lte: Int
+  likeCounter_gt: Int
+  likeCounter_gte: Int
+  dislikeCounter: Int
+  dislikeCounter_not: Int
+  dislikeCounter_in: [Int!]
+  dislikeCounter_not_in: [Int!]
+  dislikeCounter_lt: Int
+  dislikeCounter_lte: Int
+  dislikeCounter_gt: Int
+  dislikeCounter_gte: Int
+  AND: [ReplyScalarWhereInput!]
+  OR: [ReplyScalarWhereInput!]
+  NOT: [ReplyScalarWhereInput!]
 }
 
-type ReviewSubscriptionPayload {
+type ReplySubscriptionPayload {
   mutation: MutationType!
-  node: Review
+  node: Reply
   updatedFields: [String!]
-  previousValues: ReviewPreviousValues
+  previousValues: ReplyPreviousValues
 }
 
-input ReviewSubscriptionWhereInput {
+input ReplySubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: ReviewWhereInput
-  AND: [ReviewSubscriptionWhereInput!]
-  OR: [ReviewSubscriptionWhereInput!]
-  NOT: [ReviewSubscriptionWhereInput!]
+  node: ReplyWhereInput
+  AND: [ReplySubscriptionWhereInput!]
+  OR: [ReplySubscriptionWhereInput!]
+  NOT: [ReplySubscriptionWhereInput!]
 }
 
-input ReviewUpdateInput {
-  text: String
-  product: ProductUpdateOneRequiredWithoutReviewsInput
+input ReplyUpdateInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
+  message: MessageUpdateOneRequiredWithoutRepliesInput
 }
 
-input ReviewUpdateManyDataInput {
-  text: String
+input ReplyUpdateManyDataInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
 }
 
-input ReviewUpdateManyMutationInput {
-  text: String
+input ReplyUpdateManyMutationInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
 }
 
-input ReviewUpdateManyWithoutProductInput {
-  create: [ReviewCreateWithoutProductInput!]
-  delete: [ReviewWhereUniqueInput!]
-  connect: [ReviewWhereUniqueInput!]
-  set: [ReviewWhereUniqueInput!]
-  disconnect: [ReviewWhereUniqueInput!]
-  update: [ReviewUpdateWithWhereUniqueWithoutProductInput!]
-  upsert: [ReviewUpsertWithWhereUniqueWithoutProductInput!]
-  deleteMany: [ReviewScalarWhereInput!]
-  updateMany: [ReviewUpdateManyWithWhereNestedInput!]
+input ReplyUpdateManyWithoutMessageInput {
+  create: [ReplyCreateWithoutMessageInput!]
+  delete: [ReplyWhereUniqueInput!]
+  connect: [ReplyWhereUniqueInput!]
+  set: [ReplyWhereUniqueInput!]
+  disconnect: [ReplyWhereUniqueInput!]
+  update: [ReplyUpdateWithWhereUniqueWithoutMessageInput!]
+  upsert: [ReplyUpsertWithWhereUniqueWithoutMessageInput!]
+  deleteMany: [ReplyScalarWhereInput!]
+  updateMany: [ReplyUpdateManyWithWhereNestedInput!]
 }
 
-input ReviewUpdateManyWithWhereNestedInput {
-  where: ReviewScalarWhereInput!
-  data: ReviewUpdateManyDataInput!
+input ReplyUpdateManyWithWhereNestedInput {
+  where: ReplyScalarWhereInput!
+  data: ReplyUpdateManyDataInput!
 }
 
-input ReviewUpdateWithoutProductDataInput {
-  text: String
+input ReplyUpdateWithoutMessageDataInput {
+  body: String
+  likeCounter: Int
+  dislikeCounter: Int
 }
 
-input ReviewUpdateWithWhereUniqueWithoutProductInput {
-  where: ReviewWhereUniqueInput!
-  data: ReviewUpdateWithoutProductDataInput!
+input ReplyUpdateWithWhereUniqueWithoutMessageInput {
+  where: ReplyWhereUniqueInput!
+  data: ReplyUpdateWithoutMessageDataInput!
 }
 
-input ReviewUpsertWithWhereUniqueWithoutProductInput {
-  where: ReviewWhereUniqueInput!
-  update: ReviewUpdateWithoutProductDataInput!
-  create: ReviewCreateWithoutProductInput!
+input ReplyUpsertWithWhereUniqueWithoutMessageInput {
+  where: ReplyWhereUniqueInput!
+  update: ReplyUpdateWithoutMessageDataInput!
+  create: ReplyCreateWithoutMessageInput!
 }
 
-input ReviewWhereInput {
+input ReplyWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -396,33 +449,49 @@ input ReviewWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  text: String
-  text_not: String
-  text_in: [String!]
-  text_not_in: [String!]
-  text_lt: String
-  text_lte: String
-  text_gt: String
-  text_gte: String
-  text_contains: String
-  text_not_contains: String
-  text_starts_with: String
-  text_not_starts_with: String
-  text_ends_with: String
-  text_not_ends_with: String
-  product: ProductWhereInput
-  AND: [ReviewWhereInput!]
-  OR: [ReviewWhereInput!]
-  NOT: [ReviewWhereInput!]
+  body: String
+  body_not: String
+  body_in: [String!]
+  body_not_in: [String!]
+  body_lt: String
+  body_lte: String
+  body_gt: String
+  body_gte: String
+  body_contains: String
+  body_not_contains: String
+  body_starts_with: String
+  body_not_starts_with: String
+  body_ends_with: String
+  body_not_ends_with: String
+  likeCounter: Int
+  likeCounter_not: Int
+  likeCounter_in: [Int!]
+  likeCounter_not_in: [Int!]
+  likeCounter_lt: Int
+  likeCounter_lte: Int
+  likeCounter_gt: Int
+  likeCounter_gte: Int
+  dislikeCounter: Int
+  dislikeCounter_not: Int
+  dislikeCounter_in: [Int!]
+  dislikeCounter_not_in: [Int!]
+  dislikeCounter_lt: Int
+  dislikeCounter_lte: Int
+  dislikeCounter_gt: Int
+  dislikeCounter_gte: Int
+  message: MessageWhereInput
+  AND: [ReplyWhereInput!]
+  OR: [ReplyWhereInput!]
+  NOT: [ReplyWhereInput!]
 }
 
-input ReviewWhereUniqueInput {
+input ReplyWhereUniqueInput {
   id: ID
 }
 
 type Subscription {
-  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
-  review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
+  reply(where: ReplySubscriptionWhereInput): ReplySubscriptionPayload
 }
 `
       }

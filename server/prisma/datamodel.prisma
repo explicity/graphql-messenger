@@ -1,14 +1,17 @@
-type Product {
+type Message {
   id: ID! @id
   createdAt: DateTime! @createdAt
-  title: String!
-  price: Float!
-  reviews: [Review]
+  body: String!
+  likeCounter: Int! 
+  dislikeCounter: Int! 
+  replies: [Reply]
 }
 
-type Review {
+type Reply {
   id: ID! @id
   createdAt: DateTime! @createdAt
-  text: String!
-  product: Product!
+  body: String! 
+  likeCounter: Int! 
+  dislikeCounter: Int! 
+  message: Message!
 }
