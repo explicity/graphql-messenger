@@ -33,9 +33,12 @@ class MessageForm extends Component {
           mutation={POST_MESSAGE_MUTATION}
           variables={{ body }}
           update={(store, { data: { postMessage } }) => {
-            const first = LINKS_PER_PAGE;
-            const skip = 0;
             const orderBy = 'createdAt_DESC';
+            const isNewPage = this.props.location.pathname.includes('new');
+            const page = parseInt(this.props.match.params.page, 10);
+
+            const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
+            const first = isNewPage ? LINKS_PER_PAGE : 100;
             const data = store.readQuery({
               query: MESSAGES_QUERY,
               variables: { first, skip, orderBy }

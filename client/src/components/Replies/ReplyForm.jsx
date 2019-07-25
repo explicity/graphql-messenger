@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom'
 import { Mutation } from 'react-apollo';
 import { Form, Button } from 'semantic-ui-react';
 
 import { POST_REPLY_MUTATION, MESSAGES_QUERY } from '../../queries';
-
+const LINKS_PER_PAGE = 5;
 class ReplyForm extends Component {
   constructor(props) {
     super(props);
@@ -28,18 +29,26 @@ class ReplyForm extends Component {
 
     const _updateStoreAfterAddingReview = (store, newReply, messageId) => {
       const orderBy = 'createdAt_DESC';
+      const isNewPage = this.props.location.pathname.includes('new')
+      const page = parseInt(this.props.match.params.page, 10)
+    
+      const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0
+      const first = isNewPage ? LINKS_PER_PAGE : 100
       const data = store.readQuery({
         query: MESSAGES_QUERY,
-        variables: {
-          orderBy
-        }
+        variables: { first, skip, orderBy }
       });
+
       const reviewedProduct = data.messages.messagesList.find(
         item => item.id === messageId
       );
       reviewedProduct.replies.push(newReply);
-      store.writeQuery({ query: MESSAGES_QUERY, data });
-      this.props.closeForm()
+      store.writeQuery({
+        query: MESSAGES_QUERY,
+        data,
+        variables: {first, skip, orderBy }
+      });
+      this.props.closeForm();
     };
 
     return (
@@ -67,4 +76,4 @@ class ReplyForm extends Component {
   }
 }
 
-export default ReplyForm;
+export default withRouter(ReplyForm);

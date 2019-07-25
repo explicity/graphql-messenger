@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import { Comment, Header } from 'semantic-ui-react';
+import { Comment, Header, Segment } from 'semantic-ui-react';
 
 import MessageItem from './MessageItem.jsx';
 
@@ -25,31 +26,30 @@ class MessageList extends Component {
   };
 
   _getLinksToRender = data => {
-    const isNewPage = this.props.location.pathname.includes('new')
+    const isNewPage = this.props.location.pathname.includes('new');
     if (isNewPage) {
-        console.log('isNewPage: ', isNewPage);
-      return data.messages.messagesList
+      return data.messages.messagesList;
     }
-    const messagesList = data.messages.messagesList.slice()
-    messagesList.sort((l1, l2) => l2.votes.length - l1.votes.length)
-    return messagesList
-  }
+    const messages = data.messages.messagesList.slice();
+    messages.sort((l1, l2) => l2.votes.length - l1.votes.length);
+    return messages;
+  };
 
   _nextPage = data => {
-    const page = parseInt(this.props.match.params.page, 10)
+    const page = parseInt(this.props.match.params.page, 10);
     if (page <= data.messages.count / LINKS_PER_PAGE) {
-      const nextPage = page + 1
-      this.props.history.push(`/new/${nextPage}`)
+      const nextPage = page + 1;
+      this.props.history.push(`/new/${nextPage}`);
     }
-  }
-  
+  };
+
   _previousPage = () => {
-    const page = parseInt(this.props.match.params.page, 10)
+    const page = parseInt(this.props.match.params.page, 10);
     if (page > 1) {
-      const previousPage = page - 1
-      this.props.history.push(`/new/${previousPage}`)
+      const previousPage = page - 1;
+      this.props.history.push(`/new/${previousPage}`);
     }
-  }
+  };
 
   render() {
     const orderBy = 'createdAt_DESC';
@@ -119,6 +119,7 @@ class MessageList extends Component {
     return (
       <Query query={MESSAGES_QUERY} variables={this._getQueryVariables()}>
         {({ loading, error, data, subscribeToMore }) => {
+          console.log('data: ', data);
           if (loading) return <div>Loading...</div>;
           if (error) return <div>Fetch error</div>;
 
@@ -127,7 +128,6 @@ class MessageList extends Component {
           _subscribeToNewReplies(subscribeToMore);
 
           const linksToRender = this._getLinksToRender(data);
-          console.log('linksToRender: ', linksToRender);
           const isNewPage = this.props.location.pathname.includes('new');
           const pageIndex = this.props.match.params.page
             ? (this.props.match.params.page - 1) * LINKS_PER_PAGE
@@ -159,7 +159,10 @@ class MessageList extends Component {
                   <button className="pointer mr2" onClick={this._previousPage}>
                     Previous
                   </button>
-                  <button className="pointer" onClick={() => this._nextPage(data)}>
+                  <button
+                    className="pointer"
+                    onClick={() => this._nextPage(data)}
+                  >
                     Next
                   </button>
                 </div>
