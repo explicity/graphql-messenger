@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { Form, Button } from 'semantic-ui-react';
 
 import { POST_MESSAGE_MUTATION, MESSAGES_QUERY } from '../../queries';
-
-const LINKS_PER_PAGE = 5;
+import { MESSAGES_PER_PAGE } from '../../constants/messages';
 class MessageForm extends Component {
   constructor(props) {
     super(props);
@@ -36,9 +36,9 @@ class MessageForm extends Component {
             const orderBy = 'createdAt_DESC';
             const isNewPage = this.props.location.pathname.includes('new');
             const page = parseInt(this.props.match.params.page, 10);
+            const skip = isNewPage ? (page - 1) * MESSAGES_PER_PAGE : 0;
+            const first = isNewPage ? MESSAGES_PER_PAGE : 5;
 
-            const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-            const first = isNewPage ? LINKS_PER_PAGE : 100;
             const data = store.readQuery({
               query: MESSAGES_QUERY,
               variables: { first, skip, orderBy }
@@ -46,6 +46,7 @@ class MessageForm extends Component {
 
             data.messages.messagesList.unshift(postMessage);
             data.messages.count++;
+
             store.writeQuery({
               query: MESSAGES_QUERY,
               data,
@@ -59,6 +60,7 @@ class MessageForm extends Component {
               content="Add Message"
               labelPosition="left"
               onClick={postMutation}
+              disabled={!body}
               icon="edit"
               primary
             />
@@ -69,4 +71,4 @@ class MessageForm extends Component {
   }
 }
 
-export default MessageForm;
+export default withRouter(MessageForm);

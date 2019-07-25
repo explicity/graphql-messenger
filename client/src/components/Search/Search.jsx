@@ -38,7 +38,7 @@ class Search extends Component {
             Results
           </Header>
           {messages.length > 0 ? (
-            messages.map((message, index) => (
+            messages.map(message => (
               <MessageItem key={message.id} {...message} />
             ))
           ) : (

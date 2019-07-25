@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import { Comment, Header, Segment } from 'semantic-ui-react';
 
@@ -11,16 +10,15 @@ import {
   NEW_REPLIES_SUBSCRIPTION,
   ACTION_MESSAGES_SUBSCRIPTION
 } from '../../queries';
-
-const LINKS_PER_PAGE = 5;
+import { MESSAGES_PER_PAGE } from '../../constants/messages';
 
 class MessageList extends Component {
   _getQueryVariables = () => {
     const isNewPage = this.props.location.pathname.includes('new');
     const page = parseInt(this.props.match.params.page, 10);
 
-    const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-    const first = isNewPage ? LINKS_PER_PAGE : 100;
+    const skip = isNewPage ? (page - 1) * MESSAGES_PER_PAGE : 0;
+    const first = isNewPage ? MESSAGES_PER_PAGE : 100;
     const orderBy = 'createdAt_DESC';
     return { first, skip, orderBy };
   };
@@ -31,13 +29,12 @@ class MessageList extends Component {
       return data.messages.messagesList;
     }
     const messages = data.messages.messagesList.slice();
-    messages.sort((l1, l2) => l2.votes.length - l1.votes.length);
     return messages;
   };
 
   _nextPage = data => {
     const page = parseInt(this.props.match.params.page, 10);
-    if (page <= data.messages.count / LINKS_PER_PAGE) {
+    if (page <= data.messages.count / MESSAGES_PER_PAGE) {
       const nextPage = page + 1;
       this.props.history.push(`/new/${nextPage}`);
     }
@@ -92,18 +89,23 @@ class MessageList extends Component {
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev;
           const { newReply } = subscriptionData.data;
+
           const currentMessages = prev.messages.messagesList.map(item => {
             if (item.id === newReply.message.id) {
-              item.replies.push({
-                id: newReply.id,
-                body: newReply.body,
-                __typename: 'Reply'
-              });
+              const exist = item.replies.find(
+                reply => reply.id === newReply.id
+              );
+              if (!exist) {
+                item.replies.push({
+                  id: newReply.id,
+                  body: newReply.body,
+                  __typename: 'Reply'
+                });
+              }
             }
             return item;
           });
 
-          console.log(currentMessages);
           return {
             ...prev,
             messages: {
@@ -119,7 +121,6 @@ class MessageList extends Component {
     return (
       <Query query={MESSAGES_QUERY} variables={this._getQueryVariables()}>
         {({ loading, error, data, subscribeToMore }) => {
-          console.log('data: ', data);
           if (loading) return <div>Loading...</div>;
           if (error) return <div>Fetch error</div>;
 
@@ -130,13 +131,12 @@ class MessageList extends Component {
           const linksToRender = this._getLinksToRender(data);
           const isNewPage = this.props.location.pathname.includes('new');
           const pageIndex = this.props.match.params.page
-            ? (this.props.match.params.page - 1) * LINKS_PER_PAGE
+            ? (this.props.match.params.page - 1) * MESSAGES_PER_PAGE
             : 0;
 
           const {
             messages: { messagesList }
           } = data;
-          console.log('messagesList: ', messagesList);
 
           return (
             <React.Fragment>
